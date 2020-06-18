@@ -3,3 +3,6 @@
 .env
 data-postgres
 data-postgres/*
+rabbitmq/*
+!rabbitmq/enabled_plugins
+!rabitmq/rabbitmq.conf
