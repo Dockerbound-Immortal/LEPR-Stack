@@ -4,6 +4,7 @@
 data-postgres
 data-postgres/*
 rabbitmq/*
+rabbitmq/data/*
 !rabbitmq/enabled_plugins
 !rabitmq/rabbitmq.conf
 
