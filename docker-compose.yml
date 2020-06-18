@@ -1,7 +1,7 @@
-version: '3'
+version: '3.8'
 
 networks:
-  laravel:
+  lumen:
     driver: bridge
 
 services:
@@ -17,7 +17,7 @@ services:
       - php
       - postgres
     networks:
-      - laravel
+      - lumen
 
   postgres:
     image: postgres:11
@@ -37,7 +37,7 @@ services:
       - data-postgres:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d/
     networks:
-      - laravel
+      - lumen
 
   php:
     build:
@@ -49,7 +49,7 @@ services:
     ports:
       - "9000:9000"
     networks:
-      - laravel
+      - lumen
 
   composer:
     image: composer:latest
@@ -60,7 +60,7 @@ services:
     depends_on:
       - php
     networks:
-      - laravel
+      - lumen
 
   npm:
     image: node:13.7
@@ -82,7 +82,26 @@ services:
     working_dir: /var/www/html
     entrypoint: ['php', '/var/www/html/artisan']
     networks:
-      - laravel
+      - lumen
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    volumes: 
+      - ./rabbitmq/etc/:/etc/rabbitmq/
+      - ./rabbitmq/data/:/var/lib/rabbitmq/mnesia
+      - ./rabbitmq/logs/:/var/log/rabbitmq/
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - lumen
+
 
 volumes:
   data-postgres:
