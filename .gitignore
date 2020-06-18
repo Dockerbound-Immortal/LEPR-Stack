@@ -6,3 +6,15 @@ data-postgres/*
 rabbitmq/*
 !rabbitmq/enabled_plugins
 !rabitmq/rabbitmq.conf
+
+work/
+build/
+bin/
+target/
+.gradle/
+.classpath
+.checkstyle
+.project
+.settings/
+.idea/
+*.iml
